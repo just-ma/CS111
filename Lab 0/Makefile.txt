@@ -1,0 +1,58 @@
+default:
+	gcc -Wall -Wextra -g -o lab0 lab0.c
+
+check: default
+	echo "This is a test." > test.txt; \
+	./lab0 < test.txt > output.txt; \
+	if [[ $$? -ne 0 ]]; \
+	then \
+		echo "Failed: Error occurred when copying input to output"; \
+	else \
+		echo "Passed: Input successfully copied to output"; \
+	fi
+	cmp test.txt output.txt; \
+	if [[ $$? -ne 0 ]]; \
+	then \
+		echo "Failed: Input and output files do not match"; \
+	else \
+		echo "Passed: Input and output files match"; \
+	fi
+	./lab0 --notanoption < test.txt > output.txt; \
+	if [[ $$? -ne 1 ]]; \
+	then \
+		echo "Failed: Unrecognized argument did not exit with 1"; \
+	else \
+		echo "Passed: Unrecognized argument exit with 1"; \
+	fi
+	chmod -r test.txt; \
+	./lab0 --input=test.txt > output.txt; \
+	if [[ $$? -ne 2 ]]; \
+	then \
+		echo "Failed: Unreadable input file did not exit with 2"; \
+	else \
+		echo "Passed: Unreadable input file exit with 2"; \
+	fi
+	chmod +r test.txt; \
+	chmod -w output.txt; \
+	./lab0 --output=output.txt > input.txt; \
+	if [[ $$? -ne 3 ]]; \
+	then \
+		echo "Failed: Unwritable output file did not exit with 3"; \
+	else \
+		echo "Passed: Unwritable output file exit with 3"; \
+	fi
+	chmod +w output.txt; \
+	./lab0 --segfault --catch < test.txt > output.txt; \
+	if [[ $$? -ne 4 ]]; \
+	then \
+		echo "Failed: Did not exit with 4 on segmentation fault"; \
+	else \
+		echo "Passed: Caught segmentation fault and exit with 4"; \
+	fi
+	rm *.txt
+
+clean:
+	rm -f *.txt lab0 *.tar.gz
+
+dist:
+	tar -czf lab0-604805167.tar.gz lab0.c README Makefile *.png
