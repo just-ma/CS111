@@ -1,0 +1,37 @@
+NAME: Justin Ma
+EMAIL: justinma98@g.ucla.edu
+ID: 604805167
+
+====================================================================
+Included Files:
+
+
+README:
+        Identification information and a brief overview of the included files.
+
+
+Makefile:
+        Script that includes the default compile of the lab4b executable. It also 
+includes clean, which removes all files created the Makefile, check, which runs a 
+sanity check on the executable, and dist, which builds the tar.gz file.
+
+
+lab4b.c:
+	C code for lab 4b. It initialized the button and temperature sensor and
+reported the temperature every specified period. The temperature could be specified
+to either Fahrenheit or Celsius. There was also a log option which would append all outputted data to a specified file.
+
+
+====================================================================
+References:
+
+
+- http://www.cplusplus.com/reference/cstdio/fopen/
+  Opening and closing files for the --log option.
+- https://www.gnu.org/software/libc/manual/html_node/Cleanups-on-Exit.html
+  At exit function for closing files for the --log option.
+- http://www.mouser.com/catalog/specsheets/Seeed_101020015.pdf
+  Converting temperature input into Fahrenheit and Celsius.
+
+
+====================================================================

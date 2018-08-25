@@ -1,0 +1,32 @@
+NAME: Justin Ma
+EMAIL: justinma98@g.ucla.edu
+
+====================================================================
+Included Files:
+
+
+README:
+        Identification information and a brief overview of the included files.
+
+
+Makefile:
+        Script that includes the default compile of the lab4b executable. It also 
+includes clean, which removes all files created the Makefile, check, which runs a 
+sanity check on the executable, and dist, which builds the tar.gz file.
+
+
+lab4c_tcp.c:
+	C code for lab 4c part 1. It initializes temperature sensor and reports 
+the temperature every specified period, much like lab 4b. The temperature could 
+be specified to either Fahrenheit or Celsius. There was also a log option which 
+would append all outputted data to a specified file. However, instead of outputs 
+and inputs being standard output and input, information goes through a socket 
+to a TCP server.
+
+lab4c_tls.c:
+	C code for lab 4c part 2. It's the same code as part 1, but we use ssl 
+to read and write from and to a TLS server. This requires extra header files, 
+and extra options when compiling. 
+
+
+====================================================================
