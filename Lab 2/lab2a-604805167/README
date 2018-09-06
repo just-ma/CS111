@@ -1,0 +1,123 @@
+NAME: Justin Ma
+EMAIL: justinma98@g.ucla.edu
+
+====================================================================
+Included Files:
+
+
+README:
+        Identification information and a brief overview of the included files.
+
+Makefile:
+        Script that includes the default compile of the lab1b executable. It also includes clean, which removes all files created by make, test, which run all the tests to collect data for the graphs, graphs, which creates the graphs, and dist, which generates the tar.gz file.
+
+lab2_add.c:
+	C code for add module. It created a specified number of threads and iterations per thread that added to a shared variable. It includes options to use synchronization and yields.
+
+lab2_list.c:
+	C code for list module. If creates a specified number of threads and iterations per thread that added to a shared variable. It includes options to use synchronization and yields.
+
+SortedList.c:
+SortedList.h:
+	C code and header file of circular doubly linked list implementation. This is used for lab2_list.c.
+
+lab2_add.csv:
+lab2_list.csv:
+	Contains all the data gathered from the 200+ tests ran. The tests are found in testCases.sh.
+
+lab2_add-1.png:
+	Plot of threads and iterations that run without failure
+lab2_add-2.png:
+	Plot of number of iterations vs. cost per operation to determine the cost of yielding with threads=2,8.
+lab2_add-3.png:
+	Plot of number of iterations vs. cost per operation of threads=1, w/o yields.
+lab2_add-4.png:
+	Plot of threads and iterations that run without failure of multiple yields.
+lab2_add-5.png:
+	Plot of number of threads vs. cost per operation of various sync options.
+
+lab2_list-1.png:
+	Plot of number of iterations vs. cost per operation of list program.
+lab2_list-2.png:
+	Plot of threads and iterations that ran without failure at different yields
+lab2_list-3.png:
+	Plot of various yields and number of successful runs at various sync options.
+lab2_list-4.png:
+	Plot of number of threads vs. length-adjusted cost per operation at various sync options.
+
+lab2_add.gp:
+lab2_list.gp:
+	Code that takes the data and produces graphs using gnuplots.
+
+testCases.sh:
+	Includes 200+ test cases on both executables and stores the results in the csv files. The tests use many combinations of options, number of threads, and number of iterations.
+
+====================================================================
+Questions:
+
+
+QUESTION 2.1.1 - causing conflicts:
+
+- Why does it take many iterations before errors are seen?
+	Only when iterations are large, threads take a long time to perform their task and continue to execute after the next thread is created. This creates race conditions, which cause errors.
+
+- Why does a significantly smaller number of iterations so seldom fail?
+	When iterations are small, a thread may be able to carry out all its tasks before the next thread is created. This eliminates any chance of error in the critical section.
+
+
+
+QUESTION 2.1.2 - cost of yielding:
+
+- Why are the --yield runs so much slower?
+	Yielding puts the thread on queue and allows another thread to run, which costs a context switch, and a context switch is very expensive.
+
+- Where is the additional time going?
+	The additional time is used up by all the context switches that occur when a thread yields to another thread.
+
+- Is it possible to get valid per-operation timings if we are using the --yield option? If so, explain how. If not, explain why not.
+	No; We don't know how much time is being spent on context switches and how much is spend on the actual operation. 
+
+
+
+QUESTION 2.1.3 - measurement errors:
+
+- Why does the average cost per operation drop with increasing iterations?
+	Having more iterations is much less expensive than creating more threads. Thus, average cost drops when iterations increase and decrease when threads increase.
+
+- If the cost per iteration is a function of the number of iterations, how do we know how many iterations to run (or what the "correct" cost is)?
+	We can refer to lab2_add-2.png for the relationship between number of iterations and cost per operation. The cost starts out high then levels out around 1000-10000 iterations. This area can be considered the "correct" cost since the cost of context switching between threads is negligible.
+
+
+
+QUESTION 2.1.4 - costs of serialization:
+
+- Why do all of the options perform similarly for low numbers of threads?
+	With a small number of threads, the amount of lock contention is minimal. This means most of the cost comes from the actual operation, which is identical across different sync options.
+
+- Why do the three protected operations slow down as the number of threads rises?
+	More threads means more lock contention. Threads waiting for their turn to acquire the lock dramatically increase the cost per operation.
+
+
+
+QUESTION 2.2.1 - scalability of Mutex
+- Compare the variation in time per mutex-protected operation vs the number of threads in Part-1 (adds) and Part-2 (sorted lists).
+	Both parts show that time per operation increases with the number of threads. The growth rate is a noticeable difference with the cost of sorted lists growing much faster.
+
+- Comment on the general shapes of the curves, and explain why they have this shape.
+	Both curves are roughly linear. The add curve flattened out near the end more so than the list curve. This makes sense since more threads means more lock contentions, and there is more waiting for resources.
+
+- Comment on the relative rates of increase and differences in the shapes of the curves, and offer an explanation for these differences.
+	The growth rate of lists is faster than add. This is due to list operations being inherently more expensive than add operations. More time is required for each list operation, which piles up.
+
+
+
+QUESTION 2.2.2 - scalability of spin locks
+
+- Compare the variation in time per protected operation vs the number of threads for list operations protected by Mutex vs Spin locks. Comment on the general shapes of the curves, and explain why they have this shape.
+	Both increase roughly linearly, which makes sense since more threads means more lock contentions. Thus, the amount of work is linearly related to the number of threads.
+
+- Comment on the relative rates of increase and differences in the shapes of the curves, and offer an explanation for these differences.
+	Mutex are much more efficient than spin locks, which can be seen since spin locks have a much steeper increase in cost. This is because spin locks waste CPU time by spinning and continuously checking whether the lock has unlocked.
+
+
+====================================================================
