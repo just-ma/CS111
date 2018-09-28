@@ -1,0 +1,23 @@
+NAME: Justin Ma
+
+=============================================================================
+INCLUDED FILES:
+
+
+README:
+	Identification information and a brief overview of the included files.
+
+
+Makefile:
+	Script that includes the default compilation command with "make". It also
+	includes clean, which removes all files created by Makefile, and dist,
+	which generates the tar.gz file.
+
+
+lab3b.py:
+	Python code that takes in a summary of a file system and checks for
+	any inconsistencies including invalid blocks, reserved blocks, unreferenced
+	blocks, etc. The input is in the same format as the output produced by
+	lab3a in a .csv file.
+	The program exits with 0 if execution was successful, 1 if execution was
+	unsuccessful, and 2 if inconsistencies were found.
